@@ -1,14 +1,14 @@
 'use client'
 import { Dataset } from "@/components/dataset"
 import { FineTuning } from "@/components/fine-tuning"
-import { Home } from "@/components/home"
+import { Dashboard } from "@/components/dashboard"
 import { IMessages } from "@/types/globals"
 import { useEffect, useState } from "react"
 import OpenAI from "openai";
 import { JSONLToUploadable } from "@/lib/utils"
 import { toast } from "@/components/ui/use-toast"
 
-export default function Page() {
+export default function Home() {
   const [JSONL, setJSONL] = useState('')
   const [JSON, setJSON] = useState<IMessages[]>([])
   const [step, setStep] = useState(0)
@@ -62,7 +62,7 @@ export default function Page() {
 
   return (
     <main className="relative px-4 py-10 min-h-screen w-screen overflow-hidden">
-      <Home setStep={setStep} step={step} setApiKey={setApiKey} apiKey={apiKey} />
+      <Dashboard setStep={setStep} step={step} setApiKey={setApiKey} apiKey={apiKey} />
       <Dataset setStep={setStep} setJSONL={setJSONL} setJSON={setJSON} step={step} />
       <FineTuning step={step} json={JSON} train={train} />
       <p className="absolute text-sm text-muted-foreground bottom-2 left-1/2 -translate-x-1/2">Made with the ❤️ by <a className="underline" href="http://" target="_blank" rel="noopener noreferrer">Joris Delorme</a>.</p>

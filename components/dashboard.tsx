@@ -106,7 +106,7 @@ const FineTuningModelRow = ({model, isLast, deleteModel}: {model: IOpenaiFineTun
     )
 }
 
-export function Home({ step, setStep, setApiKey, apiKey }: { step: number, setStep: React.Dispatch<React.SetStateAction<number>>, setApiKey: React.Dispatch<React.SetStateAction<string>>, apiKey: string }) {
+export function Dashboard({ step, setStep, setApiKey, apiKey }: { step: number, setStep: React.Dispatch<React.SetStateAction<number>>, setApiKey: React.Dispatch<React.SetStateAction<string>>, apiKey: string }) {
 
     const [showKey, setShowKey] = useState(false)
     const [lockKey, setLockKey] = useState(false)
