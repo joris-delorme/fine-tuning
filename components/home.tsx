@@ -163,30 +163,30 @@ export function Home({ step, setStep, setApiKey, apiKey }: { step: number, setSt
                     <div className="grid gap-4">
                         <Card className="w-[350px]">
                             <CardHeader>
-                                <CardTitle>Your Openai's files</CardTitle>
+                                <CardTitle>Your Openai&apos;s files</CardTitle>
                                 <CardDescription>This tools help you to create a fine tuning your future GPT model.</CardDescription>
                             </CardHeader>
                             <CardContent className="grid gap-2">
                                 {
-                                    files.map((file, key) => <FileRow file={file} isLast={files.length - 1 !== key} deleteFile={deleteFile} />)
+                                    files.map((file, key) => <FileRow key={key} file={file} isLast={files.length - 1 !== key} deleteFile={deleteFile} />)
                                 }
                             </CardContent>
                         </Card>
                         <Card className="w-[350px]">
                             <CardHeader>
-                                <CardTitle>Let's fine tuning your next AI.</CardTitle>
+                                <CardTitle>Let&apos;s fine tuning your next AI.</CardTitle>
                                 <CardDescription>This tools help you to create a fine tuning your future GPT model.</CardDescription>
                             </CardHeader>
                             <CardContent className="grid gap-2">
                                 {
-                                    fineTuningModel.map((model, key) => <FineTuningModelRow model={model} isLast={fineTuningModel.length - 1 !== key} deleteModel={cancelModel} />)
+                                    fineTuningModel.map((model, key) => <FineTuningModelRow key={key} model={model} isLast={fineTuningModel.length - 1 !== key} deleteModel={cancelModel} />)
                                 }
                             </CardContent>
                         </Card>
                     </div>
                     <Card className="w-[350px]">
                         <CardHeader>
-                            <CardTitle>Let's fine tuning your next AI.</CardTitle>
+                            <CardTitle>Let&apos;s fine tuning your next AI.</CardTitle>
                             <CardDescription>This tools help you to create a fine tuning your future GPT model.</CardDescription>
                         </CardHeader>
                         <CardContent className="grid gap-2">

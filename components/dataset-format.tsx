@@ -15,7 +15,7 @@ export function DatasetFormat() {
                 <DialogHeader>
                     <DialogTitle>Format your dataset</DialogTitle>
                     <DialogDescription>
-                        Your dataset need to have at least of 10 rows and have exactly 3 columns ! See the exemple below ( don't include the first row ):
+                        Your dataset need to have at least of 10 rows and have exactly 3 columns ! See the exemple below ( don&apos;t include the first row ):
                     </DialogDescription>
                 </DialogHeader>
                 <div className="">
