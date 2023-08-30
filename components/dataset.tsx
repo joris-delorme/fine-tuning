@@ -1,10 +1,12 @@
 'use client'
+
 import FileInput from "@/components/ui/file-input";
 import { useEffect } from "react";
 import * as XLSX from 'xlsx'
 import { Back } from "./back";
 import { IMessages } from "@/types/globals";
 import { toast } from "@/components/ui/use-toast";
+import useWindowSize from "@/hooks/useWindowSize";
 
 export function Dataset({ setJSONL, setJSON, step, setStep }: { setJSONL: React.Dispatch<React.SetStateAction<string>>, setJSON: React.Dispatch<React.SetStateAction<IMessages[]>>, step: number, setStep: React.Dispatch<React.SetStateAction<number>> }) {
 
@@ -92,9 +94,12 @@ export function Dataset({ setJSONL, setJSON, step, setStep }: { setJSONL: React.
   useEffect(() => {
     console.log(step)
   }, [step])
+
+  const { width } = useWindowSize()
+
   return (
     <div
-      style={{ transform: step > 1 ? `translate(-${window.innerWidth}px, -50%)` : step === 1 ? `translate(-50%, -50%)` : `translate(${window.innerWidth}px, -50%)` }}
+      style={{ transform: step > 1 ? `translate(-${width}px, -50%)` : step === 1 ? `translate(-50%, -50%)` : `translate(${width}px, -50%)` }}
       className="absolute top-1/2 left-1/2 grid gap-4 transition-all duration-500 ease-run">
       <Back setStep={() => setStep(0)} />
       <FileInput onFileChange={file => handleFileUpload(file)} />

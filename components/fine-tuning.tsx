@@ -15,6 +15,7 @@ import { BadgeDollarSign, Rocket } from "lucide-react"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { roundNumber } from "@/lib/utils"
+import useWindowSize from "@/hooks/useWindowSize"
 
 export function FineTuning({ step, train, json }: { step: number, json: IMessages[], train: (apiKey: string) => void }) {
     const [tokens, setTokens] = useState(0)
@@ -27,9 +28,10 @@ export function FineTuning({ step, train, json }: { step: number, json: IMessage
         })
         setTokens(roundNumber(res, 4))
     }, [json])
+    const { width } = useWindowSize()
     return (
         <div
-            style={{ transform: step > 2 ? `translate(-${window.innerWidth}px, -50%)` : step === 2 ? `translate(-50%, -50%)` : `translate(${window.innerWidth}px, -50%)` }}
+            style={{ transform: step > 2 ? `translate(-${width}px, -50%)` : step === 2 ? `translate(-50%, -50%)` : `translate(${width}px, -50%)` }}
             className="absolute top-1/2 left-1/2 grid gap-4 transition-all duration-500 ease-run">
             <Card>
                 <CardHeader>

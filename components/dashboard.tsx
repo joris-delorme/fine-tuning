@@ -19,6 +19,7 @@ import { apiKeyRegex, cn } from "@/lib/utils"
 import OpenAI from "openai";
 import { toast } from "./ui/use-toast"
 import Loader from "./ui/loader"
+import useWindowSize from "@/hooks/useWindowSize"
 
 interface IOpenaiFile {
     id: string,
@@ -144,9 +145,11 @@ export function Dashboard({ step, setStep, setApiKey, apiKey }: { step: number, 
         if (openai) displayInfo()
     }, [openai])
 
+    const { width } = useWindowSize()
+
     return (
         <div
-            style={{ transform: step > 0 ? `translate(-${window.innerWidth}px, -50%)` : `translate(-50%, -50%)` }}
+            style={{ transform: step > 0 ? `translate(-${width}px, -50%)` : `translate(-50%, -50%)` }}
             className="absolute top-1/2 left-1/2 grid gap-4 transition-all duration-500 ease-run">
             <Card className="p-6">
                 <div className="flex">
