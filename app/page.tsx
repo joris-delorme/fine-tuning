@@ -3,7 +3,7 @@ import { Dataset } from "@/components/dataset"
 import { FineTuning } from "@/components/fine-tuning"
 import { Dashboard } from "@/components/dashboard"
 import { IMessages } from "@/types/globals"
-import { useEffect, useState } from "react"
+import { useEffect, useLayoutEffect, useState } from "react"
 import OpenAI from "openai";
 import { JSONLToUploadable } from "@/lib/utils"
 import { toast } from "@/components/ui/use-toast"
@@ -28,7 +28,7 @@ export default function Home() {
     let isFileProcessed = false
     let fileRetreive = ''
 
-    /*
+
     while (!isFileProcessed) {
       const f = await openai.files.retrieve(file.id)
       isFileProcessed = ['processed', 'error', 'deleting', 'deleted'].includes(f.status || '')
@@ -61,7 +61,6 @@ export default function Home() {
     } else {
       console.log(fileRetreive)
     }
-    */
   }
 
   useEffect(() => {
@@ -73,13 +72,17 @@ export default function Home() {
     else return -1
   }
 
+  useLayoutEffect(() => {
+    const icon = document.querySelector("link[rel='icon']") as HTMLLinkElement    
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => icon.href = e.matches ? "/light/favicon.ico" : "/favicon.ico")
+    icon.href = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? "/light/favicon.ico" : "/favicon.ico"
+  }, [])
+
   return (
     <main className="px-4 py-20 flex flex-col justify-center items-center min-h-screen w-screen overflow-hidden">
-
       <SlideEffect show={step === 0} defaultSlide={0}>
         <Dashboard setStep={setStep} setApiKey={setApiKey} apiKey={apiKey} />
       </SlideEffect>
-
       <SlideEffect show={step === 1} direction={getDir(step, 1)} className="absolute top-1/2 left-1/2">
         <div className="-translate-y-1/2 -translate-x-1/2 grid gap-4">
           <Back setStep={() => setStep(0)} />
@@ -90,10 +93,10 @@ export default function Home() {
       <SlideEffect show={step === 2} direction={getDir(step, 2)} className="absolute top-1/2 left-1/2">
         <div className="-translate-y-1/2 -translate-x-1/2 grid gap-4 transition-all">
           <Back setStep={() => {
-              setJSON([])
-              setJSONL('')
-              setStep(1)
-            }} />
+            setJSON([])
+            setJSONL('')
+            setStep(1)
+          }} />
           <FineTuning json={JSON} train={train} />
         </div>
       </SlideEffect>
