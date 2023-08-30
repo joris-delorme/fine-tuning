@@ -1,3 +1,4 @@
+'use client'
 import FileInput from "@/components/ui/file-input";
 import { useEffect } from "react";
 import * as XLSX from 'xlsx'
