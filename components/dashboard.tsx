@@ -161,7 +161,7 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
     const { width } = useWindowSize()
 
     return (
-        <Card className="p-6 w-full max-w-[800px]">
+        <Card className="p-6 w-full max-w-[800px] lg:w-[800px]">
             <div className="flex">
                 <div className="grid gap-2">
                     <a className="flex gap-1 items-center" href="https://platform.openai.com/account/api-keys" target="_blank" rel="noopener noreferrer">
@@ -180,8 +180,8 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
                 <div className="grid gap-4 w-full">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Your Openai&apos;s files</CardTitle>
-                            <CardDescription>All your files stored by Openai are here.</CardDescription>
+                            <CardTitle>Your OpenAI files</CardTitle>
+                            <CardDescription>All your files stored by OpenAI are here.</CardDescription>
                         </CardHeader>
                         <CardContent className="grid gap-2">
                             {
@@ -200,7 +200,7 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
                                         <div className="mx-auto flex flex-col items-center justify-center text-center">
                                             <h2 className="text-xl font-semibold">No Files</h2>
                                             <p className="text-center text-sm font-normal leading-6 text-muted-foreground">
-                                                Start by fine tuning gpt-3-turbo.
+                                                Start by fine-tuning a OpenAI model.
                                             </p>
                                         </div>
                                     </div>
@@ -209,8 +209,8 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
                     </Card>
                     <Card>
                         <CardHeader>
-                            <CardTitle>Let&apos;s fine tuning your next AI.</CardTitle>
-                            <CardDescription>All your fine-tuning model are here.</CardDescription>
+                            <CardTitle>Your fine-tuned models</CardTitle>
+                            <CardDescription>All your fine-tuned models are here.</CardDescription>
                         </CardHeader>
                         <CardContent className="grid gap-2">
                             {
@@ -229,7 +229,7 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
                                         <div className="mx-auto flex flex-col items-center justify-center text-center">
                                             <h2 className="text-xl font-semibold">No fine-tuning model</h2>
                                             <p className="text-center text-sm font-normal leading-6 text-muted-foreground">
-                                                Start by fine tuning gpt-3-turbo.
+                                                Start by fine-tuning a OpenAI model.
                                             </p>
                                         </div>
                                     </div>
@@ -239,8 +239,8 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
                 </div>
                 <Card className="sm:max-w-[350px] w-full">
                     <CardHeader>
-                        <CardTitle>Let&apos;s fine tuning your next AI.</CardTitle>
-                        <CardDescription>This tools help you to create a fine tuning your future GPT model.</CardDescription>
+                        <h1 className="font-semibold leading-none tracking-tight">Let&apos;s fine-tuning Openai models</h1>
+                        <CardDescription>This tool helps you to create a fine-tuning of GPT models.</CardDescription>
                     </CardHeader>
                     <CardContent className="grid gap-2">
                         {

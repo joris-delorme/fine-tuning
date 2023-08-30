@@ -27,7 +27,7 @@ export const featuresConfig: IFeature[] = [
         link: ""
     },
     {
-        name: "It's API cost optimized",
+        name: "It's API cost-optimized",
         icon: "coins",
         link: ""
     },

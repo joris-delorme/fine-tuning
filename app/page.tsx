@@ -28,6 +28,7 @@ export default function Home() {
     let isFileProcessed = false
     let fileRetreive = ''
 
+    /*
     while (!isFileProcessed) {
       const f = await openai.files.retrieve(file.id)
       isFileProcessed = ['processed', 'error', 'deleting', 'deleted'].includes(f.status || '')
@@ -60,6 +61,7 @@ export default function Home() {
     } else {
       console.log(fileRetreive)
     }
+    */
   }
 
   useEffect(() => {
