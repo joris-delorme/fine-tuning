@@ -12,7 +12,7 @@ export default function Page() {
   const [JSONL, setJSONL] = useState('')
   const [JSON, setJSON] = useState<IMessages[]>([])
   const [step, setStep] = useState(0)
-  const [apiKey, setApiKey] = useState('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')
+  const [apiKey, setApiKey] = useState('')
 
 
   const train = async (apikey: string) => {
