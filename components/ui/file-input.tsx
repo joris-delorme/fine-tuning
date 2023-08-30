@@ -1,44 +1,46 @@
 'use client'
-import { UploadCloud } from 'lucide-react';
-import React, { useRef, useState } from 'react';
-import { Button } from './button';
-import { Separator } from './separator';
-import { cn } from '@/lib/utils';
-import { DatasetFormat } from '@/components/dataset-format';
+import { UploadCloud } from 'lucide-react'
+import React, { useRef, useState } from 'react'
+import { Button } from './button'
+import { Separator } from './separator'
+import { cn } from '@/lib/utils'
+import { DatasetFormat } from '@/components/dataset-format'
 
 const FileInput = ({ onFileChange }: { onFileChange: (file: File | null) => void}) => {
-  const [isDragOver, setIsDragOver] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    onFileChange(file);
-  };
+    const file = event.target.files ? event.target.files[0] : null
+    onFileChange(file)
+    if (fileInputRef.current && fileInputRef.current.value) fileInputRef.current.value = ''
+  }
 
-  const triggerFileSelectPopup = () => fileInputRef.current?.click();
+  const triggerFileSelectPopup = () => fileInputRef.current?.click()
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragOver(true);
-  };
+    event.preventDefault()
+    setIsDragOver(true)
+  }
 
   const handleDragEnter = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragOver(true);
-  };
+    event.preventDefault()
+    setIsDragOver(true)
+  }
 
   const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragOver(false);
-  };
+    event.preventDefault()
+    setIsDragOver(false)
+  }
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragOver(false);
+    event.preventDefault()
+    setIsDragOver(false)
 
-    const file = event.dataTransfer.files[0];
-    onFileChange(file);
-  };
+    const file = event.dataTransfer.files[0]
+    onFileChange(file)
+    if (fileInputRef.current && fileInputRef.current.value) fileInputRef.current.value = ''
+  }
 
   return (
     <div className='flex min-h-[400px] w-full flex-col items-center group justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50'
@@ -47,7 +49,7 @@ const FileInput = ({ onFileChange }: { onFileChange: (file: File | null) => void
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <input type="file" ref={fileInputRef} accept=".xls,.xlsx" onChange={handleFileChange} hidden />
+      <input type="file" value='' ref={fileInputRef} accept=".xls,.xlsx" onChange={handleFileChange} hidden />
       <div className="mx-auto flex flex-col items-center justify-center text-center">
         <div className="flex h-20 w-20 items-center justify-center group-hover:scale-120 transition-all duration-500 rounded-full bg-muted">
           <UploadCloud className={cn(isDragOver && '-translate-y-2')} size={30} />
@@ -75,7 +77,7 @@ const FileInput = ({ onFileChange }: { onFileChange: (file: File | null) => void
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FileInput;
+export default FileInput

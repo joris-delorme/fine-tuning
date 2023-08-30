@@ -5,6 +5,8 @@ import { Inter } from 'next/font/google'
 import { ModeToggle } from '@/components/theme/mode-toggle'
 import { Toaster } from '@/components/ui/toaster'
 import { Analytics } from '@vercel/analytics/react';
+import { Button } from '@/components/ui/button'
+import { Command, Github, Twitter } from 'lucide-react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,9 +22,26 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ModeToggle />
+          <div className="absolute flex justify-between w-full px-4 sm:top-6 sm:px-10 top-4 left-0">
+            <div className="items-center space-x-2 flex">
+              <Command size={24} />
+              <p className='hidden font-bold sm:inline-block'>Fine Tuning</p>
+            </div>
+            <div className="flex gap-2">
+              <Button variant="secondary" asChild>
+                <a href="mailto:hello@jorisdelorme.fr">request feature</a>
+              </Button>
+              <Button variant="outline" size="icon" asChild>
+                <a href="https://github.com/joris-delorme" target="_blank" rel="noopener noreferrer"><Github className='h-[1.2rem] w-[1.2rem]' /></a>
+              </Button>
+              <Button variant="outline" size="icon" asChild>
+                <a href="https://twitter.com/joris_delorme_" target="_blank" rel="noopener noreferrer"><Twitter className='h-[1.2rem] w-[1.2rem]' /></a>
+              </Button>
+              <ModeToggle />
+            </div>
+          </div>
           <Toaster  />
           {children}
         </ThemeProvider>

@@ -7,6 +7,8 @@ import { useEffect, useState } from "react"
 import OpenAI from "openai";
 import { JSONLToUploadable } from "@/lib/utils"
 import { toast } from "@/components/ui/use-toast"
+import { SlideEffect } from "@/components/slide-effect"
+import { Back } from "@/components/back"
 
 export default function Home() {
   const [JSONL, setJSONL] = useState('')
@@ -15,11 +17,9 @@ export default function Home() {
   const [apiKey, setApiKey] = useState('')
 
 
-  const train = async (apikey: string) => {
-    if (!apikey) return
-    setStep(3)
-    const openai = new OpenAI({ apiKey: apikey, dangerouslyAllowBrowser: true })
-
+  const train = async () => {
+    if (!apiKey) return
+    const openai = new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true })
     const file = await openai.files.create({
       file: JSONLToUploadable(JSONL),
       purpose: 'fine-tune'
@@ -29,11 +29,11 @@ export default function Home() {
     let fileRetreive = ''
 
     while (!isFileProcessed) {
-        const f = await openai.files.retrieve(file.id)
-        isFileProcessed = ['processed', 'error', 'deleting', 'deleted'].includes(f.status || '')
-        console.log(f.status)
-        if (!isFileProcessed) await new Promise(resolve => setTimeout(resolve, 2000))
-        else fileRetreive = f.status || ''
+      const f = await openai.files.retrieve(file.id)
+      isFileProcessed = ['processed', 'error', 'deleting', 'deleted'].includes(f.status || '')
+      console.log(f.status)
+      if (!isFileProcessed) await new Promise(resolve => setTimeout(resolve, 2000))
+      else fileRetreive = f.status || ''
     }
 
     if (fileRetreive === 'processed') {
@@ -41,16 +41,22 @@ export default function Home() {
         training_file: file.id,
         model: 'gpt-3.5-turbo'
       })
-      .then(fineTuning => {
-        console.log(fineTuning)
-      })
-      .catch(err => {
-        toast({
-          variant: 'destructive',
-          title: "An error has occurred...",
-          description: err.message
+        .then(fineTuning => {
+          console.log(fineTuning)
+          setJSON([])
+          setJSONL('')
+          setStep(0)
         })
-      })
+        .catch(err => {
+          toast({
+            variant: 'destructive',
+            title: "An error has occurred...",
+            description: err.message
+          })
+          setJSON([])
+          setJSONL('')
+          setStep(0)
+        })
     } else {
       console.log(fileRetreive)
     }
@@ -60,12 +66,37 @@ export default function Home() {
     if (JSONL) setStep(2)
   }, [JSONL])
 
+  const getDir = (s: number, n: number): number => {
+    if (s < n) return 1
+    else return -1
+  }
+
   return (
-    <main className="relative px-4 py-10 min-h-screen w-screen overflow-hidden">
-      <Dashboard setStep={setStep} step={step} setApiKey={setApiKey} apiKey={apiKey} />
-      <Dataset setStep={setStep} setJSONL={setJSONL} setJSON={setJSON} step={step} />
-      <FineTuning step={step} json={JSON} train={train} />
-      <p className="absolute text-sm text-muted-foreground bottom-2 left-1/2 -translate-x-1/2">Made with the ❤️ by <a className="underline" href="http://" target="_blank" rel="noopener noreferrer">Joris Delorme</a>.</p>
+    <main className="px-4 py-20 flex flex-col justify-center items-center min-h-screen w-screen overflow-hidden">
+
+      <SlideEffect show={step === 0} defaultSlide={0}>
+        <Dashboard setStep={setStep} setApiKey={setApiKey} apiKey={apiKey} />
+      </SlideEffect>
+
+      <SlideEffect show={step === 1} direction={getDir(step, 1)} className="absolute top-1/2 left-1/2">
+        <div className="-translate-y-1/2 -translate-x-1/2 grid gap-4">
+          <Back setStep={() => setStep(0)} />
+          <Dataset setJSONL={setJSONL} setJSON={setJSON} />
+        </div>
+      </SlideEffect>
+
+      <SlideEffect show={step === 2} direction={getDir(step, 2)} className="absolute top-1/2 left-1/2">
+        <div className="-translate-y-1/2 -translate-x-1/2 grid gap-4 transition-all">
+          <Back setStep={() => {
+              setJSON([])
+              setJSONL('')
+              setStep(1)
+            }} />
+          <FineTuning json={JSON} train={train} />
+        </div>
+      </SlideEffect>
+
+      <p className="footer tall absolute bottom-2">Made with the ❤️ by <a className="underline" href="https://jorisdelorme.fr" target="_blank" rel="noopener noreferrer">Joris</a>.</p>
     </main>
   )
 }
