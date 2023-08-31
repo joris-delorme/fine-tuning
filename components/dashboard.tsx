@@ -158,8 +158,8 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
                     </a>
                     <div className="flex gap-2">
                         <Input disabled={lockKey} className={cn(!apiKeyRegex.test(apiKey) && apiKey ? 'border-destructive outline-destructive text-destructive' : "", "sm:w-[400px] max-w-[400px] w-full")} placeholder="sk-pRr1aftTM41RZMIacvj1..." type={showKey ? "text" : "password"} name="apiKey" id="apiKey" onChange={e => setApiKey(e.target.value)} />
-                        <Button variant="outline" size='icon' onClick={() => setShowKey(old => !old)}>{showKey ? <Eye size={18} /> : <EyeOff size={18} />}</Button>
-                        <Button variant="outline" size='icon' onClick={() => setLockKey(old => !old)}>{lockKey ? <Lock size={18} /> : <Unlock size={18} />}</Button>
+                        <Button aria-label="Mask and unmask password" variant="outline" size='icon' onClick={() => setShowKey(old => !old)}>{showKey ? <Eye size={18} /> : <EyeOff size={18} />}</Button>
+                        <Button aria-label="Lock or unlock password" variant="outline" size='icon' onClick={() => setLockKey(old => !old)}>{lockKey ? <Lock size={18} /> : <Unlock size={18} />}</Button>
                     </div>
                 </div>
             </div>

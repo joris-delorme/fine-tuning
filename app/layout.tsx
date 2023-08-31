@@ -77,10 +77,10 @@ export default function RootLayout({
                 <a href="mailto:hello@jorisdelorme.fr">request feature</a>
               </Button>
               <Button variant="outline" size="icon" asChild>
-                <a href="https://github.com/joris-delorme" target="_blank" rel="noopener noreferrer"><Github className='h-[1.2rem] w-[1.2rem]' /></a>
+                <a aria-label="Check out the Github" href="https://github.com/joris-delorme" target="_blank" rel="noopener noreferrer"><Github className='h-[1.2rem] w-[1.2rem]' /></a>
               </Button>
               <Button variant="outline" size="icon" asChild>
-                <a href="https://twitter.com/joris_delorme_" target="_blank" rel="noopener noreferrer"><Twitter className='h-[1.2rem] w-[1.2rem]' /></a>
+                <a aria-label="Check out my Twitter" href="https://twitter.com/joris_delorme_" target="_blank" rel="noopener noreferrer"><Twitter className='h-[1.2rem] w-[1.2rem]' /></a>
               </Button>
               <ModeToggle />
             </div>
