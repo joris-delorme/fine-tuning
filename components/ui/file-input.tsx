@@ -43,7 +43,7 @@ const FileInput = ({ onFileChange }: { onFileChange: (file: File | null) => void
   }
 
   return (
-    <div className='flex min-h-[400px] w-full flex-col items-center group justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50'
+    <div className='flex min-h-[400px] w-[90vw] max-w-xl flex-col items-center group justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50'
       onDragOver={handleDragOver}
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}

@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input"
 import { Separator } from "./ui/separator"
 import { useEffect, useMemo, useState } from "react"
 import { Bot, ExternalLink, Eye, EyeOff, Lock, Trash2, Unlock, UploadCloud } from "lucide-react"
-import { apiKeyRegex, cn } from "@/lib/utils"
+import { apiKeyRegex, bitsToMBorKB, cn, unixTimestampToDate } from "@/lib/utils"
 import OpenAI from "openai";
 import { toast } from "./ui/use-toast"
 import Loader from "./ui/loader"
@@ -41,7 +41,7 @@ interface IOpenaiFineTuning {
     fine_tuned_model: string | null,
     organization_id: string,
     result_files: IOpenaiFile[],
-    status: string,
+    status: string, // created, pending, running, succeeded, failed, or cancelled.
     validation_file: string | null,
     training_file: string,
     hyperparameters: {
@@ -70,7 +70,10 @@ const FileRow = ({ file, isLast, deleteFile }: { file: IOpenaiFile, isLast: bool
     return (
         <>
             <div className="flex gap-2 items-center justify-between">
-                <p className="text-sm">{file.filename}</p>
+                <div className="flex gap-2">
+                    <p className="text-sm">{file.filename}</p>
+                    <p className="text-sm text-muted-foreground">{bitsToMBorKB(file.bytes)}</p>
+                </div>
                 <Button variant='ghost' size='icon' onClick={() => handler()}>{isLoading ? <Loader /> : <Trash2 className="text-destructive hover:text-destructive" size={18} />}</Button>
             </div>
             {isLast && <Separator />}
@@ -78,33 +81,24 @@ const FileRow = ({ file, isLast, deleteFile }: { file: IOpenaiFile, isLast: bool
     )
 }
 
-const FineTuningModelRow = ({ model, isLast, deleteModel }: { model: IOpenaiFineTuning, isLast: boolean, deleteModel: (fileID: string) => Promise<void> }) => {
-
-    const [isLoading, setIsLoading] = useState(false)
-
-    const handler = async () => {
-        setIsLoading(true)
-        deleteModel(model.id)
-            .catch(err => {
-                toast({
-                    variant: 'destructive',
-                    title: 'An error has occurred',
-                    description: err.message
-                })
-            })
-            .finally(() => setIsLoading(false))
-    }
+const FineTuningModelRow = ({ model, isLast }: { model: IOpenaiFineTuning, isLast: boolean}) => {
 
     return (
         <>
-            <div className="flex gap-2 items-center justify-between">
-                <div className="grid gap-2">
+            <div className={cn(model.status === 'running' && 'animate-pulse', "flex gap-2 items-center justify-between")}>
+                <div className="grid gap-1">
                     <p className="text-sm">{model.fine_tuned_model}</p>
+                    <p className="text-sm text-muted-foreground">{unixTimestampToDate(model.created_at)}</p>
                 </div>
                 <Button variant='ghost' size='icon' asChild>
-                    <a href={`https://platform.openai.com/playground?model=${model.fine_tuned_model}`} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink size={18} />
-                    </a>
+                    {
+                        model.status === 'running' ?
+                        <Loader />
+                        :
+                        <a href={`https://platform.openai.com/playground?model=${model.fine_tuned_model}`} target="_blank" rel="noopener noreferrer">
+                            <ExternalLink size={18} />
+                        </a>
+                    }
                 </Button>
             </div>
             {isLast && <Separator />}
@@ -134,12 +128,6 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
         if (!openai) return
         await openai.files.del(fileID)
         setFiles(old => old.filter(f => f.id !== fileID))
-    }
-
-    const cancelModel = async (modelID: string) => {
-        if (!openai) return
-        await openai.fineTuning.jobs.cancel(modelID)
-        setFineTuningModel(old => old.filter(m => m.id !== modelID))
     }
 
     useEffect(() => {
@@ -223,7 +211,7 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
                             {
                                 fineTuningModel.length
                                     ?
-                                    fineTuningModel.map((model, key) => <FineTuningModelRow key={key} model={model} isLast={fineTuningModel.length - 1 !== key} deleteModel={cancelModel} />)
+                                    fineTuningModel.map((model, key) => <FineTuningModelRow key={key} model={model} isLast={fineTuningModel.length - 1 !== key} />)
                                     : (apiKeyRegex.test(apiKey) && !isLoading) &&
                                     <div className='flex w-full flex-col items-center group justify-center rounded-md border border-dashed py-4 px-8 text-center'>
                                         <div className="mx-auto flex flex-col items-center justify-center text-center">

@@ -74,7 +74,7 @@
     @apply bg-background text-foreground;
   }
 
-  @media screen and (max-height: 710px) {
+  @media screen and (max-height: 710px) and (min-width: 768px) {
     .footer {
       position: relative!important;
     }

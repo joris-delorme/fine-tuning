@@ -13,8 +13,9 @@ import { useEffect, useState } from "react"
 import { IMessages } from "@/types/globals"
 import { BadgeDollarSign, Rocket } from "lucide-react"
 import { roundNumber } from "@/lib/utils"
+import Loader from "./ui/loader"
 
-export function FineTuning({ train, json }: { json: IMessages[], train: () => void }) {
+export function FineTuning({ train, json, isTraining }: { json: IMessages[], train: () => void, isTraining: boolean }) {
     const [tokens, setTokens] = useState(0)
 
     useEffect(() => {
@@ -26,7 +27,7 @@ export function FineTuning({ train, json }: { json: IMessages[], train: () => vo
     }, [json])
     
     return (
-            <Card>
+            <Card className="w-[90vw] max-w-xl">
                 <CardHeader>
                     <CardTitle>Final part, train your model !</CardTitle>
                     <CardDescription>We will fine tuning chat-GPT-3-turbo.</CardDescription>
@@ -38,7 +39,7 @@ export function FineTuning({ train, json }: { json: IMessages[], train: () => vo
                     </div>
                 </CardContent>
                 <CardFooter className="flex justify-end">
-                    <Button className="flex gap-1 group" onClick={() => train()}>Train <Rocket className="group-hover:translate-x-2 group-hover:-translate-y-1 transition-all fill-background" size={16} /></Button>
+                    <Button className="flex gap-1 group" disabled={isTraining} onClick={() => train()}>{isTraining ? <Loader /> : <>Train <Rocket className="group-hover:translate-x-2 group-hover:-translate-y-1 transition-all fill-background" size={16} /></>}</Button>
                 </CardFooter>
             </Card>
     )
