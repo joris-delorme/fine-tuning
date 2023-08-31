@@ -79,7 +79,7 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="px-4 py-20 flex flex-col justify-center items-center min-h-screen w-screen overflow-hidden">
+    <main className="px-4 relative py-20 flex flex-col justify-center items-center min-h-screen w-screen overflow-hidden">
       <SlideEffect show={step === 0} defaultSlide={0}>
         <Dashboard setStep={setStep} setApiKey={setApiKey} apiKey={apiKey} />
       </SlideEffect>
