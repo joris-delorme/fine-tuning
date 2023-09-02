@@ -10,6 +10,7 @@ import { toast } from "@/components/ui/use-toast"
 import { SlideEffect } from "@/components/slide-effect"
 import { Back } from "@/components/back"
 import { Waiting } from "@/components/waiting"
+import { Newsletter } from "@/components/newsletter"
 
 interface IOpenaiFile {
   id: string,
@@ -27,6 +28,7 @@ export default function Home() {
   const [step, setStep] = useState(0)
   const [apiKey, setApiKey] = useState('')
   const [isTraining, setTraining] = useState(false)
+  const [showNewsletter, setShowNewsLetter] = useState(false)
 
 
   const train = async () => {
@@ -40,7 +42,7 @@ export default function Home() {
       setStep(0)
       setTraining(false)
       return
-    } 
+    }
 
     setTraining(true)
 
@@ -67,17 +69,21 @@ export default function Home() {
         training_file: file.id,
         model: 'gpt-3.5-turbo'
       })
+        .then(_ => {
+          setStep(3)
+          setShowNewsLetter(true)
+        })
         .catch(err => {
           toast({
             variant: 'destructive',
             title: "An error has occurred...",
             description: err.message
           })
+          setStep(0)
         })
         .finally(() => {
           setJSON([])
           setJSONL('')
-          setStep(3)
           setTraining(false)
         })
     } else {
@@ -90,9 +96,11 @@ export default function Home() {
       setJSONL('')
       setStep(0)
       setTraining(false)
-    }    
+    }
+    /*
     await new Promise(resolve => setTimeout(resolve, 2000))
     setTraining(false)
+    */
   }
 
   useEffect(() => {
@@ -105,7 +113,7 @@ export default function Home() {
   }
 
   useLayoutEffect(() => {
-    const icon = document.querySelector("link[rel='icon']") as HTMLLinkElement    
+    const icon = document.querySelector("link[rel='icon']") as HTMLLinkElement
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => icon.href = e.matches ? "/light/favicon.ico" : "/favicon.ico")
     icon.href = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? "/light/favicon.ico" : "/favicon.ico"
   }, [])
@@ -140,10 +148,10 @@ export default function Home() {
       </div>
 
       <SlideEffect show={step === 0} defaultSlide={0} className="relative z-90">
-        <Dashboard setStep={setStep} setApiKey={setApiKey} apiKey={apiKey} />
+        <Dashboard setStep={setStep} setApiKey={setApiKey} apiKey={apiKey} isTraining={isTraining} />
       </SlideEffect>
 
-
+      <Newsletter show={showNewsletter} />
       <p className="footer tall absolute bottom-2">Made with the ❤️ by <a className="underline" href="https://jorisdelorme.fr" target="_blank" rel="noopener noreferrer">Joris</a>.</p>
     </main>
   )

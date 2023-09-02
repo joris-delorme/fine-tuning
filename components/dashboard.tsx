@@ -14,12 +14,11 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Separator } from "./ui/separator"
 import { useEffect, useMemo, useState } from "react"
-import { Bot, ExternalLink, Eye, EyeOff, Lock, Trash2, Unlock, UploadCloud } from "lucide-react"
+import { ExternalLink, Eye, EyeOff, Lock, Trash2, Unlock } from "lucide-react"
 import { apiKeyRegex, bitsToMBorKB, cn, unixTimestampToDate } from "@/lib/utils"
 import OpenAI from "openai";
 import { toast } from "./ui/use-toast"
 import Loader from "./ui/loader"
-import useWindowSize from "@/hooks/useWindowSize"
 import { Skeleton } from "./ui/skeleton"
 
 interface IOpenaiFile {
@@ -74,30 +73,12 @@ const FileRow = ({ file, isLast, deleteFile }: { file: IOpenaiFile, isLast: bool
                     <p className="text-sm">{file.filename}</p>
                     <p className="text-sm text-muted-foreground">{bitsToMBorKB(file.bytes)}</p>
                 </div>
-                <Button variant='ghost' size='icon' onClick={() => handler()}>{isLoading ? <Loader /> : <Trash2 className="text-destructive hover:text-destructive" size={18} />}</Button>
-            </div>
-            {isLast && <Separator />}
-        </>
-    )
-}
-
-const FineTuningModelRow = ({ model, isLast }: { model: IOpenaiFineTuning, isLast: boolean}) => {
-
-    return (
-        <>
-            <div className={cn(model.status === 'running' && 'animate-pulse', "flex gap-2 items-center justify-between")}>
-                <div className="grid gap-1">
-                    <p className="text-sm">{model.fine_tuned_model}</p>
-                    <p className="text-sm text-muted-foreground">{unixTimestampToDate(model.created_at)}</p>
-                </div>
-                <Button variant='ghost' size='icon' asChild>
+                <Button disabled={isLoading || file.status === 'uploaded'} variant='ghost' size='icon' onClick={() => handler()}>
                     {
-                        model.status === 'running' ?
-                        <Loader />
-                        :
-                        <a href={`https://platform.openai.com/playground?model=${model.fine_tuned_model}`} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink size={18} />
-                        </a>
+                        file.status === 'uploaded' ?
+                            <Loader />
+                            :
+                            isLoading ? <Loader /> : <Trash2 className="text-destructive hover:text-destructive" size={18} />
                     }
                 </Button>
             </div>
@@ -106,7 +87,32 @@ const FineTuningModelRow = ({ model, isLast }: { model: IOpenaiFineTuning, isLas
     )
 }
 
-export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispatch<React.SetStateAction<number>>, setApiKey: React.Dispatch<React.SetStateAction<string>>, apiKey: string }) {
+const FineTuningModelRow = ({ model, isLast }: { model: IOpenaiFineTuning, isLast: boolean }) => {
+
+    return (
+        <>
+            <div className={cn(model.status === 'running' && 'animate-pulse', "flex gap-2 items-center justify-between")}>
+                <div className="grid gap-1">
+                    <p className="text-sm">{model.fine_tuned_model ? model.fine_tuned_model : 'New Model'}</p>
+                    <p className="text-sm text-muted-foreground">{unixTimestampToDate(model.created_at)}</p>
+                </div>
+                <Button variant='ghost' size='icon' asChild>
+                    {
+                        model.status === 'running' ?
+                            <Loader />
+                            :
+                            <a href={`https://platform.openai.com/playground?model=${model.fine_tuned_model}`} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink size={18} />
+                            </a>
+                    }
+                </Button>
+            </div>
+            {isLast && <Separator />}
+        </>
+    )
+}
+
+export function Dashboard({ setStep, setApiKey, apiKey, isTraining }: { setStep: React.Dispatch<React.SetStateAction<number>>, setApiKey: React.Dispatch<React.SetStateAction<string>>, apiKey: string, isTraining: boolean }) {
 
     const [showKey, setShowKey] = useState(false)
     const [lockKey, setLockKey] = useState(false)
@@ -144,9 +150,7 @@ export function Dashboard({ setStep, setApiKey, apiKey }: { setStep: React.Dispa
             setFineTuningModel(FTModelResponse)
         }
         if (openai) displayInfo()
-    }, [openai])
-
-    const { width } = useWindowSize()
+    }, [openai, isTraining])
 
     return (
         <Card className="p-6 w-full max-w-[800px] lg:w-[800px]">

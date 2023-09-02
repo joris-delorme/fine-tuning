@@ -1,6 +1,5 @@
 import { ThemeProvider } from '@/components/theme/theme-provider'
 import '../styles/globals.css'
-import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ModeToggle } from '@/components/theme/mode-toggle'
 import { Toaster } from '@/components/ui/toaster'
