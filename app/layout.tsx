@@ -66,7 +66,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} overflow-x-hidden`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <div className="absolute flex justify-between w-full px-4 sm:top-6 sm:px-10 top-4 left-0">
+          <div className="absolute z-[99] flex justify-between w-full px-4 sm:top-6 sm:px-10 top-4 left-0">
             <div className="items-center space-x-2 flex">
               <BrainCircuit size={24} />
               <p className='hidden font-bold sm:inline-block'>Fine Tuning</p>
