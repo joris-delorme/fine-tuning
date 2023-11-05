@@ -56,7 +56,7 @@ const FileInput = ({ onFileChange }: { onFileChange: (file: File | null) => void
         </div>
         <h2 className="mt-6 text-xl font-semibold">Drag and drop dataset</h2>
         <p className="mb-4 mt-2 text-center text-sm font-normal leading-6 text-muted-foreground">
-          Commencé par ajouter votre première entreprise.
+          We need your dataset to make a fine-tuned model.
         </p>
         <Button onClick={triggerFileSelectPopup} className='mb-6'>Upload</Button>
         <div className="flex gap-5 items-center text-sm">
